@@ -29,7 +29,10 @@ public class Compte {
         Transaction t = new Transaction("T" + (historique.size() + 1), "Dépôt", montant, null, numeroCompte);
         historique.add(t);
         ecrireDansFichier(t);
+
     }
+
+
 
     public void retrait(double montant) {
         if (montant <= 0) {
@@ -44,6 +47,7 @@ public class Compte {
         Transaction t = new Transaction("T" + (historique.size() + 1), "Retrait", montant, numeroCompte, null);
         historique.add(t);
         ecrireDansFichier(t);
+        System.out.println("Solde is Retrait");
     }
 
     public void virement(double montant, Compte destinataire) {
@@ -60,6 +64,7 @@ public class Compte {
         destinataire.solde += montant;
 
         Transaction t = new Transaction("T" + (historique.size() + 1), "Virement", montant, numeroCompte, destinataire.numeroCompte);
+        System.out.println("virement passé bien");
         historique.add(t);
         destinataire.historique.add(t);
 
