@@ -31,4 +31,5 @@ public abstract class Personne {
     public void setMotDePasse(String motDePasse) {
         this.motDePasse = motDePasse;
     }
+
 }

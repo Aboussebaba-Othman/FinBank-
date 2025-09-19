@@ -30,7 +30,7 @@ public class Gestionnaire extends Personne{
         Client client = clients.get(idClient);
         Compte compte = new Compte(numero, type);
         client.ajouterCompte(compte);
-        System.out.println("Compte créé pour " + client.getNom() + " : " + numero);
+        System.out.println("Compte créé pour " + client.getNom() + " avec le numéro : " + numero);
 
     }
 
@@ -39,6 +39,18 @@ public class Gestionnaire extends Personne{
         System.out.println("Comptes du client " + client.getNom() + ":");
         for (Compte c : client.getComptes().values()) {
             System.out.println(c.getNumeroCompte() + " | " + c.getTypeCompte() + " | Solde: " + c.getSolde() + " DH");
+        }
+
+    }
+
+    public  void consulterHistorique(String idClient, String numeroCompte){
+        Client c = clients.get(idClient);
+
+        Compte cmpt = c.getComptes().get(numeroCompte);
+
+        System.out.println("les Historiques de compte " + numeroCompte + " est :");
+        for (Transaction t: cmpt.getHistorique()){
+            System.out.println(t);
         }
 
     }

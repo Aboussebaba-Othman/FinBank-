@@ -2,90 +2,157 @@ import java.util.Scanner;
 
 public class Main{
     public static void main(String[] args){
-        Client client = new Client("1", "Othman","Aboussebaba","onepiece.istheBest@gmail.com","12345678");
-
-        Compte compte1 = new Compte("C1001", "Courant");
-        Compte compte2 = new Compte("C1002", "Épargne");
-
-        client.ajouterCompte(compte1);
-        client.ajouterCompte(compte2);
-
         Scanner sc = new Scanner(System.in);
-        int choix;
 
-        do {
-            System.out.println("\n----- Menu Client -----");
-            System.out.println("1. Consulter solde compte 1");
-            System.out.println("2. Consulter solde compte 2");
-            System.out.println("3. Dépot compte 1");
-            System.out.println("4. Dépot compte 2");
-            System.out.println("5. Retrait compte 1");
-            System.out.println("6. Retrait compte 2");
-            System.out.println("7. Virement vers compte 2");
-            System.out.println("8. Virement vers compte 1");
-            System.out.println("9. Consulter historique compte 1");
-            System.out.println("10. Consulter historique compte 2");
+        Gestionnaire gestionnaire = new Gestionnaire("G1", "Othman", "Aboussebaba", "aboussebaba@gmail.com", "1234");
+        boolean quitter = false;
+
+        while (!quitter) {
+            System.out.println("\n===== Menu Principal =====");
+            System.out.println("1. Gestionnaire");
+            System.out.println("2. Client");
             System.out.println("0. Quitter");
             System.out.print("Votre choix : ");
-            choix = sc.nextInt();
+            int choix = sc.nextInt();
+            sc.nextLine();
 
             switch (choix) {
                 case 1:
-                    System.out.println("Solde du compte " + compte1.getNumeroCompte() + " : " + compte1.getSolde() + " DH");
-                    break;
-                case 2:
-                    System.out.println("Solde du compte " + compte2.getNumeroCompte() + " : " + compte2.getSolde() + " DH");
-                    break;
-                case 3:
-                    System.out.print("Montant à déposer : ");
-                    double depot = sc.nextDouble();
-                    compte1.depot(depot);
-                    break;
-                case 4:
-                    System.out.print("Montant à déposer : ");
-                    double depot2 = sc.nextDouble();
-                    compte2.depot(depot2);
-                    break;
-                case 5:
-                    System.out.print("Montant à retirer : ");
-                    double retrait1 = sc.nextDouble();
-                    compte1.retrait(retrait1);
-                    break;
-                case 6:
-                    System.out.print("Montant a retirer : ");
-                    double retrait2 = sc.nextDouble();
-                    compte2.retrait(retrait2);
-                    break;
-                case 7:
-                    System.out.print("Montant a virer vers compte 2 : ");
-                    double virement = sc.nextDouble();
-                    compte1.virement(virement, compte2);
-                    break;
-                case 8:
-                    System.out.print("Montant a virer vers compte 1 : ");
-                    double virement2 = sc.nextDouble();
-                    compte2.virement(virement2, compte1);
-                    break;
-                case 9:
-                    System.out.println("Historique du compte 1 :");
-                    for (Transaction t : compte1.getHistorique()) {
-                        System.out.println(t);
+                    boolean quitterGestionnaire = false;
+                    while (!quitterGestionnaire) {
+                        System.out.println("\n===== Menu Gestionnaire =====");
+                        System.out.println("1. Créer un client");
+                        System.out.println("2. Créer un compte pour un client");
+                        System.out.println("3. Consulter les comptes d’un client");
+                        System.out.println("4. Consulter l’historique d’un compte");
+                        System.out.println("0. Retour");
+                        System.out.print("Votre choix : ");
+                        int choixGest = sc.nextInt();
+                        sc.nextLine();
+
+                        switch (choixGest) {
+                            case 1:
+                                System.out.print("ID client: ");
+                                String id = sc.nextLine();
+                                System.out.print("Nom: ");
+                                String nom = sc.nextLine();
+                                System.out.print("Prénom: ");
+                                String prenom = sc.nextLine();
+                                System.out.print("Email: ");
+                                String email = sc.nextLine();
+                                System.out.print("Mot de passe: ");
+                                String mdp = sc.nextLine();
+                                gestionnaire.creerClient(id, nom, prenom, email, mdp);
+                                break;
+                            case 2:
+                                System.out.print("ID client: ");
+                                String idClient = sc.nextLine();
+                                System.out.print("Numéro de compte: ");
+                                String numero = sc.nextLine();
+                                System.out.print("Type (Courant / Épargne): ");
+                                String type = sc.nextLine();
+                                gestionnaire.creerCompte(idClient, numero, type);
+                                break;
+                            case 3:
+                                System.out.print("ID client: ");
+                                idClient = sc.nextLine();
+                                gestionnaire.consulterComptes(idClient);
+                                break;
+                            case 4:
+                                System.out.print("ID client: ");
+                                idClient = sc.nextLine();
+                                System.out.print("Numéro compte: ");
+                                String num = sc.nextLine();
+                                gestionnaire.consulterHistorique(idClient, num);
+                                break;
+                            case 0:
+                                quitterGestionnaire = true;
+                                break;
+                            default:
+                                System.out.println("Choix invalide !");
+                        }
                     }
                     break;
-                case 10:
-                    System.out.println("Historique du compte 2 :");
-                    for (Transaction t : compte2.getHistorique()) {
-                        System.out.println(t);
+
+
+                case 2:
+                    System.out.print("Entrer votre ID client: ");
+                    String idClient = sc.nextLine();
+
+                    Client client = gestionnaire.getClients().get(idClient);
+
+                    boolean quitterClient = false;
+                    while (!quitterClient) {
+                        System.out.println("\n===== Menu Client =====");
+                        System.out.println("1. Consulter mes comptes");
+                        System.out.println("2. Dépôt");
+                        System.out.println("3. Retrait");
+                        System.out.println("4. Virement");
+                        System.out.println("5. Consulter historique d’un compte");
+                        System.out.println("0. Retour");
+                        System.out.print("Votre choix : ");
+                        int choixClient = sc.nextInt();
+                        sc.nextLine();
+
+                        switch (choixClient) {
+                            case 1:
+                                for (Compte c : client.getComptes().values()) {
+                                    System.out.println(c.getNumeroCompte() + " | " + c.getTypeCompte() + " | Solde: " + c.getSolde());
+                                }
+                                break;
+                            case 2:
+                                System.out.print("Numéro compte: ");
+                                String numC = sc.nextLine();
+                                System.out.print("Montant dépôt: ");
+                                double dep = sc.nextDouble();
+                                sc.nextLine();
+                                client.getComptes().get(numC).depot(dep);
+                                break;
+                            case 3:
+                                System.out.print("Numéro compte: ");
+                                numC = sc.nextLine();
+                                System.out.print("Montant retrait: ");
+                                double ret = sc.nextDouble();
+                                sc.nextLine();
+                                client.getComptes().get(numC).retrait(ret);
+                                break;
+                            case 4:
+                                System.out.print("Numéro compte source: ");
+                                String source = sc.nextLine();
+                                System.out.print("Numéro compte destination: ");
+                                String dest = sc.nextLine();
+                                System.out.print("Montant virement: ");
+                                double mnt = sc.nextDouble();
+                                sc.nextLine();
+                                Compte cSource = client.getComptes().get(source);
+                                Compte cDest = client.getComptes().get(dest);
+                                cSource.virement(mnt, cDest);
+                                break;
+                            case 5:
+                                System.out.print("Numéro compte: ");
+                                numC = sc.nextLine();
+                                for (Transaction t : client.getComptes().get(numC).getHistorique()) {
+                                    System.out.println(t);
+                                }
+                                break;
+                            case 0:
+                                quitterClient = true;
+                                break;
+                            default:
+                                System.out.println("Choix invalide !");
+                        }
                     }
                     break;
                 case 0:
-                    System.out.println("M3A SALAMA !");
+                    quitter = true;
+                    System.out.println("Merci et Bay Bay !");
                     break;
+
                 default:
                     System.out.println("Choix invalide !");
-            }
-        } while (choix != 0);
 
+            }
+        }
         sc.close();
     }
 }
